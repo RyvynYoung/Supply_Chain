@@ -68,7 +68,19 @@ def prep_pick_data(df):
     
     # Drop the redundant columns
     df = df.drop(columns=['start_time', 'end_time'])
+
+    # add time calculation columns
+    df['pick_time'] = df.end - df.start
+    df['int_day'] = df.start.dt.dayofweek
+    df['day_name'] = df.start.dt.day_name()
+    df['start_year'] = pd.DatetimeIndex(df['start']).year
+    df['start_month'] = pd.DatetimeIndex(df['start']).month
+    df['start_Y_M'] = pd.to_datetime(df['start']).dt.to_period('M')
+    df['end_year'] = pd.DatetimeIndex(df['start']).year
+    df['end_month'] = pd.DatetimeIndex(df['start']).month
+    df['end_Y_M'] = pd.to_datetime(df['start']).dt.to_period('M')
     
+    # split data
     train_and_validate, test = train_test_split(df, test_size=.15, random_state=123)
     train, validate = train_test_split(train_and_validate, test_size=.15, random_state=123)
     return train, test, validate  
