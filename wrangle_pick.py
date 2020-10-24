@@ -10,6 +10,7 @@ from sklearn.preprocessing import StandardScaler, QuantileTransformer, PowerTran
 import acquire
 import prepare
 
+######### scale data functions to be adjusted for pick data ######
 def add_scaled_columns(train, validate, test, scaler, columns_to_scale):
     """This function scales the Telco2yr data"""
     new_column_names = [c + '_scaled' for c in columns_to_scale]
@@ -42,14 +43,17 @@ def scale_mall(train, validate, test):
     return train, validate, test
 
 
+###### wrangle pick data ######
 def wrangle_pick_data():
     """
     This function takes acquired mall data, completes the prep
     and splits the data into train, validate, and test datasets
     """
+    # get data
     df = acquire.run()
+    # prep and split data
     train, test, validate = prepare.run(df)
-    #train_and_validate, test = train_test_split(df, test_size=.15, random_state=123)
-    #train, validate = train_test_split(train_and_validate, test_size=.15, random_state=123)
+    # scale and define target
+    # not completed yet
     return train, test, validate
     #return scale_mall(train, validate, test)
