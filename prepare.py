@@ -48,14 +48,16 @@ def prep_pick_data(df):
     # add time calculation columns
     df['pick_time'] = df.end - df.start
     df['pick_seconds'] = df.pick_time.dt.total_seconds()
-    df['int_day'] = df.start.dt.dayofweek
+    df['day'] = df.start.dt.day
     df['day_name'] = df.start.dt.day_name()
-    df['start_year'] = pd.DatetimeIndex(df['start']).year
-    df['start_month'] = pd.DatetimeIndex(df['start']).month
+    df['year'] = pd.DatetimeIndex(df['start']).year
+    df['month'] = pd.DatetimeIndex(df['start']).month
+    df['week'] = pd.DatetimeIndex(df['start']).week
+    df['hour'] = pd.DatetimeIndex(df['start']).hour
     df['start_Y_M'] = pd.to_datetime(df['start']).dt.to_period('M')
-    df['end_year'] = pd.DatetimeIndex(df['start']).year
-    df['end_month'] = pd.DatetimeIndex(df['start']).month
-    df['end_Y_M'] = pd.to_datetime(df['start']).dt.to_period('M')
+    # df['end_year'] = pd.DatetimeIndex(df['start']).year
+    # df['end_month'] = pd.DatetimeIndex(df['start']).month
+    # df['end_Y_M'] = pd.to_datetime(df['start']).dt.to_period('M')
     df['sec_per_box'] = df.pick_seconds / df.total_boxes
     df['lines_per_box'] = df.total_lines / df.total_boxes
     df['sec_per_line'] = df.pick_seconds / df.total_lines
