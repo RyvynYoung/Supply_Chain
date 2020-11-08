@@ -54,19 +54,22 @@ def prep_pick_data(df):
     df['month'] = pd.DatetimeIndex(df['start']).month
     df['week'] = pd.DatetimeIndex(df['start']).week
     df['hour'] = pd.DatetimeIndex(df['start']).hour
-    df['start_Y_M'] = pd.to_datetime(df['start']).dt.to_period('M')
+    # df['start_Y_M'] = pd.to_datetime(df['start']).dt.to_period('M')
     # df['end_year'] = pd.DatetimeIndex(df['start']).year
     # df['end_month'] = pd.DatetimeIndex(df['start']).month
     # df['end_Y_M'] = pd.to_datetime(df['start']).dt.to_period('M')
     df['sec_per_box'] = df.pick_seconds / df.total_boxes
     df['lines_per_box'] = df.total_lines / df.total_boxes
     df['sec_per_line'] = df.pick_seconds / df.total_lines
-
+    df['pick_seconds'] = df['pick_seconds'].astype(int)
     # run operator outlier removal before split because removal is based on domain knowledge
     df = operator_outliers(df)
     # drop negative pick seconds value
     outlier2 = df[df.pick_seconds < 0].index
     df = df.drop(outlier2)
+    # drop 7 observations where total_boxes <1
+    outlier3 = df[df.total_boxes < 1].index
+    df = df.drop(outlier3)
     # run data outlier removal before split based on domain knowledge (want only 3 years with consistent range of volume)
     df = df[(~(df['start'] < '2016-01-01')) & (~(df['start'] > '2019-12-31'))]
     # split data
