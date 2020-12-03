@@ -202,6 +202,20 @@ def plot_categorical_and_continuous_vars(categorical_var, continuous_var, df):
     sns.swarmplot(data=df, y=continuous_var, x=categorical_var)
     plt.show()
 
+
+def ttest_1samp(sample, overall_mean):
+    '''
+    runs one sample t-test
+    '''
+    # set alpha value
+    alpha = .05
+    t, p = stats.ttest_1samp(sample, overall_mean)
+    print('t=', t)
+    print('p=', p)
+    print("p is less than alpha=", p < alpha)
+    return t, p
+
+
 def pearson(continuous_var1, continuous_var2):
     '''
     runs pearson r test on 2 continuous variables
