@@ -76,12 +76,12 @@ def prep_pick_data(df):
     train_and_validate, test = train_test_split(df, test_size=.15, random_state=123)
     train, validate = train_test_split(train_and_validate, test_size=.15, random_state=123)
     
-    return train, test, validate  
+    return train, validate, test
 
 #### NOTE: call the above with: train, test, validate = prep_pick_data(df)
 
 def run(df):
     print("Prepare: Cleaning acquired data...")
-    train, test, validate = prep_pick_data(df)
+    train, validate, test = prep_pick_data(df)
     print("Prepare: Completed!")
-    return train, test, validate
+    return train, validate, test
