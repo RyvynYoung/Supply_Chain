@@ -46,14 +46,41 @@ def scale_mall(train, validate, test):
 ###### wrangle pick data ######
 def wrangle_pick_data():
     """
-    This function takes acquired mall data, completes the prep
+    This function takes acquired pick data, completes the prep
     and splits the data into train, validate, and test datasets
     """
     # get data
     df = acquire.run()
     # prep and split data
-    train, test, validate = prepare.run(df)
+    train, validate, test = prepare.run(df)
     # scale and define target
     # not completed yet
-    return train, test, validate
+    return train, validate, test
     #return scale_mall(train, validate, test)
+
+def createXy(X_train, X_validate, X_test):
+    '''
+    This function splits the train, validate, and test sets for modeling and
+    does the necessary preprocessing needed
+    '''
+    # need to drop observations with more than 1 box to reduce noise
+    train_index = X_train[X_train.total_boxes > 1].index
+    X_train.drop(train_index, inplace=True)
+    val_index = X_validate[X_validate.total_boxes > 1].index
+    X_validate.drop(val_index, inplace=True)
+    test_index = X_test[X_test.total_boxes > 1].index
+    X_test.drop(test_index, inplace=True)
+    # create X_train_explore that still has target for analysis
+    X_train_exp = X_train.copy()
+    # split for modeling create X and y
+    y_train = X_train[['pick_seconds']]
+    y_validate = X_validate[['pick_seconds']]
+    y_test = X_test[['pick_seconds']]    
+    X_train = X_train.drop(columns=['pick_seconds'])
+    X_validate = X_validate.drop(columns=['pick_seconds'])
+    X_test = X_test.drop(columns=['pick_seconds'])
+    # setup features
+
+    # drop columns not used in modeling
+
+    return X_train_exp, X_train, X_validate, X_test, y_train, y_validate, y_test
