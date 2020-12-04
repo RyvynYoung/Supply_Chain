@@ -31,14 +31,14 @@ def add_scaled_columns(train, validate, test, scaler, columns_to_scale):
     
     return train, validate, test
 
-def scale_mall(train, validate, test):
+def scale(train, validate, test):
     """This function provides the inputs and runs the add_scaled_columns function"""
     train, validate, test = add_scaled_columns(
     train,
     validate,
     test,
     scaler=sklearn.preprocessing.MinMaxScaler(),
-    columns_to_scale=['spending_score', 'annual_income', 'age'],
+    columns_to_scale=['total_lines'],
     )
     return train, validate, test
 
@@ -79,8 +79,25 @@ def createXy(X_train, X_validate, X_test):
     X_train = X_train.drop(columns=['pick_seconds'])
     X_validate = X_validate.drop(columns=['pick_seconds'])
     X_test = X_test.drop(columns=['pick_seconds'])
-    # setup features
-
-    # drop columns not used in modeling
-
     return X_train_exp, X_train, X_validate, X_test, y_train, y_validate, y_test
+
+def model_preprocess1(X_train, X_validate, X_test):
+    '''
+    This function drops columns not used as features and scales total lines for modeling
+    and converts hour to boolean column is_hr_18.
+    '''
+    # get only the feature columns
+    X_train_scaled = X_train[['total_lines', 'hour']]
+    X_validate_scaled = X_validate[['total_lines', 'hour']]
+    X_test_scaled = X_test[['total_lines', 'hour']]
+    # scale total_lines
+    X_train_scaled, X_validate_scaled, X_test_scaled = scale(X_train_scaled, X_validate_scaled, X_test_scaled)
+    # create boolean for is hour 18
+    X_train_scaled['is_hr_18'] = np.where(X_train_scaled.hour == 18, 1, 0)
+    X_validate_scaled['is_hr_18'] = np.where(X_validate_scaled.hour == 18, 1, 0)
+    X_test_scaled['is_hr_18'] = np.where(X_test_scaled.hour == 18, 1, 0)
+    # drop non-scaled and original hour columns
+    X_train_scaled = X_train_scaled.drop(columns=['total_lines', 'hour'])
+    X_validate_scaled = X_validate_scaled.drop(columns=['total_lines', 'hour'])
+    X_test_scaled = X_test_scaled.drop(columns=['total_lines', 'hour'])
+    return X_train_scaled, X_validate_scaled, X_test_scaled
