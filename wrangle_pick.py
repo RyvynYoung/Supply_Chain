@@ -101,3 +101,20 @@ def model_preprocess1(X_train, X_validate, X_test):
     X_validate_scaled = X_validate_scaled.drop(columns=['total_lines', 'hour'])
     X_test_scaled = X_test_scaled.drop(columns=['total_lines', 'hour'])
     return X_train_scaled, X_validate_scaled, X_test_scaled
+
+def model_preprocess2(X_train, X_validate, X_test):
+    '''
+    This function drops columns not used as features and scales total lines for modeling.
+    Does not scale tenure bin because values are ordinal, or is part time because values are boolean.
+    '''
+    # get only the feature columns
+    X_train_scaled = X_train[['total_lines', 'tenure_bin', 'is_part_time']]
+    X_validate_scaled = X_validate[['total_lines', 'tenure_bin', 'is_part_time']]
+    X_test_scaled = X_test[['total_lines', 'tenure_bin', 'is_part_time']]
+    # scale total_lines
+    X_train_scaled, X_validate_scaled, X_test_scaled = scale(X_train_scaled, X_validate_scaled, X_test_scaled)
+    # drop non-scaled column
+    X_train_scaled = X_train_scaled.drop(columns=['total_lines'])
+    X_validate_scaled = X_validate_scaled.drop(columns=['total_lines'])
+    X_test_scaled = X_test_scaled.drop(columns=['total_lines'])
+    return X_train_scaled, X_validate_scaled, X_test_scaled
