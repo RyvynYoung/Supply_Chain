@@ -1,12 +1,16 @@
-# Supply Chain Project
-## Pick Data Analysis
+   <img src="https://i.pinimg.com/originals/98/65/95/98659526dbbed7d8c4441bfbab9572b0.jpg"
+    style="center"
+     /> 
 
-# Project Scope:
+# Supply Chain Project
+
+## Pick Data Analysis
+#### Project Scope:
 Based on publicly available data what is the baseline productivity predicted?
 How accurate is the baseline?
 Does adding additional features of tenure and shift length improve accuracy of model predictions?
 
-# Project Inspiration:
+#### Project Inspiration
 “We manage what we measure, but frequently we measure what is easy.”
 
 # Unexpected Findings
