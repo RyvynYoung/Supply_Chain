@@ -5,7 +5,7 @@
 # Supply Chain Project
 
 ## Pick Data Analysis
-#### Project Scope:
+#### Project Scope
 Based on publicly available data what is the baseline productivity predicted?
 How accurate is the baseline?
 Does adding additional features of tenure and shift length improve accuracy of model predictions?
